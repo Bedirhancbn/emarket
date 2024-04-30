@@ -17,7 +17,17 @@ const Tab = createBottomTabNavigator();
 function HomeScreen() {
   return (
     <Stack.Navigator screenOptions={{headerShown: false}}>
-      <Stack.Screen name="Main" component={Main} />
+      <Stack.Screen
+        name="Main"
+        component={Main}
+        options={{
+          headerShown: true,
+          title: 'E-market',
+          headerStyle: {backgroundColor: '#2A59FE'},
+          headerTitleStyle: {fontWeight: '900', fontSize: 28},
+          headerTintColor: '#fff',
+        }}
+      />
       <Stack.Screen
         name="Detail"
         component={Detail}
@@ -37,7 +47,17 @@ function HomeScreen() {
 function CartScreen() {
   return (
     <Stack.Navigator screenOptions={{headerShown: false}}>
-      <Stack.Screen name="CartStack" component={Cart} />
+      <Stack.Screen
+        name="CartStack"
+        component={Cart}
+        options={{
+          headerShown: true,
+          title: 'E-market',
+          headerStyle: {backgroundColor: '#2A59FE'},
+          headerTitleStyle: {fontWeight: '900', fontSize: 28},
+          headerTintColor: '#fff',
+        }}
+      />
     </Stack.Navigator>
   );
 }
