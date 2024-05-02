@@ -19,7 +19,7 @@ function useFetch(url) {
     };
 
     fetchData();
-  }, []);
+  }, [url]);
 
   return {
     data,

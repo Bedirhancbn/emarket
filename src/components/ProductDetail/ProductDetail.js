@@ -1,11 +1,17 @@
 import {View, Text, Image, TouchableOpacity} from 'react-native';
-import React from 'react';
+import React, {useContext} from 'react';
 import useFetch from '../../hooks/useFetch';
 import Config from 'react-native-config';
 import styles from './ProductDetail.style';
+import {ProductContext} from '../../context/ProductContext';
 
 const ProductDetail = ({productId}) => {
   const {data: detailData} = useFetch(Config.URL);
+  const {addCart, cartData} = useContext(ProductContext);
+  const handleClick = () => {
+    addCart(detailData[productId]);
+    console.log(cartData);
+  };
   return (
     <View>
       {detailData ? (
@@ -26,7 +32,9 @@ const ProductDetail = ({productId}) => {
               </Text>
             </View>
             <View>
-              <TouchableOpacity style={styles.button_container}>
+              <TouchableOpacity
+                style={styles.button_container}
+                onPress={handleClick}>
                 <Text style={styles.button_text}>Add to Cart</Text>
               </TouchableOpacity>
             </View>

@@ -1,5 +1,5 @@
 import {View, Text, FlatList, TextInput, StyleSheet} from 'react-native';
-import React, {useEffect, useState} from 'react';
+import React, {useContext, useEffect, useState} from 'react';
 import useFetch from '../../../hooks/useFetch';
 import Config from 'react-native-config';
 import ProductCard from '../../../components/ProductCard/ProductCard';
@@ -25,6 +25,7 @@ const Main = ({navigation}) => {
       />
     );
   };
+
   return (
     <View style={styles.container}>
       <FlatList

@@ -1,8 +1,9 @@
 import * as React from 'react';
-import {View, Text} from 'react-native';
+import {Image} from 'react-native';
 import {NavigationContainer} from '@react-navigation/native';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
+import {ProductProvider} from './context/ProductContext';
 
 import Main from './screens/Home/Main/Main';
 import Detail from './screens/Home/Detail/Detail';
@@ -81,12 +82,91 @@ function ProfileScreen() {
 function App() {
   return (
     <NavigationContainer>
-      <Tab.Navigator screenOptions={{headerShown: false}}>
-        <Tab.Screen name="Home" component={HomeScreen} />
-        <Tab.Screen name="Cart" component={CartScreen} />
-        <Tab.Screen name="Favorities" component={FavoritiesScreen} />
-        <Tab.Screen name="Profile" component={ProfileScreen} />
-      </Tab.Navigator>
+      <ProductProvider>
+        <Tab.Navigator screenOptions={{headerShown: false}}>
+          <Tab.Screen
+            name="Home"
+            component={HomeScreen}
+            options={{
+              title: '',
+              tabBarIcon: () => {
+                return (
+                  <Image
+                    style={{
+                      width: 35,
+                      height: 35,
+                      marginTop: 15,
+                      marginRight: 15,
+                    }}
+                    source={require('./assets/images/home_icon.png')}
+                  />
+                );
+              },
+            }}
+          />
+          <Tab.Screen
+            name="Cart"
+            component={CartScreen}
+            options={{
+              title: '',
+              tabBarBadge: 3,
+              tabBarIcon: () => {
+                return (
+                  <Image
+                    style={{
+                      width: 35,
+                      height: 35,
+                      marginTop: 15,
+                      marginRight: 15,
+                    }}
+                    source={require('./assets/images/cart_icon.png')}
+                  />
+                );
+              },
+            }}
+          />
+          <Tab.Screen
+            name="Favorities"
+            component={FavoritiesScreen}
+            options={{
+              title: '',
+              tabBarIcon: () => {
+                return (
+                  <Image
+                    style={{
+                      width: 35,
+                      height: 35,
+                      marginTop: 15,
+                      marginRight: 15,
+                    }}
+                    source={require('./assets/images/favorites_icon.png')}
+                  />
+                );
+              },
+            }}
+          />
+          <Tab.Screen
+            name="Profile"
+            component={ProfileScreen}
+            options={{
+              title: '',
+              tabBarIcon: () => {
+                return (
+                  <Image
+                    style={{
+                      width: 35,
+                      height: 35,
+                      marginTop: 15,
+                      marginRight: 15,
+                    }}
+                    source={require('./assets/images/profile_icon.png')}
+                  />
+                );
+              },
+            }}
+          />
+        </Tab.Navigator>
+      </ProductProvider>
     </NavigationContainer>
   );
 }

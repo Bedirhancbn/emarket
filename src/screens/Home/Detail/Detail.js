@@ -1,4 +1,4 @@
-import {View, Text, StyleSheet} from 'react-native';
+import {View} from 'react-native';
 import React, {useEffect} from 'react';
 import ProductDetail from '../../../components/ProductDetail';
 import {useNavigation} from '@react-navigation/native';
@@ -22,9 +22,5 @@ const Detail = ({route}) => {
     </View>
   );
 };
-
-const styles = StyleSheet.create({
-  container: {flex: 1},
-});
 
 export default Detail;
