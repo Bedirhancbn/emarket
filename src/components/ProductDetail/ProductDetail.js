@@ -7,10 +7,9 @@ import {ProductContext} from '../../context/ProductContext';
 
 const ProductDetail = ({productId}) => {
   const {data: detailData} = useFetch(Config.URL);
-  const {addCart, cartData} = useContext(ProductContext);
+  const {addCart} = useContext(ProductContext);
   const handleClick = () => {
     addCart(detailData[productId]);
-    console.log(cartData);
   };
   return (
     <View>

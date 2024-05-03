@@ -3,14 +3,12 @@ import React, {useState} from 'react';
 import styles from './MainFlatListHeader.style';
 
 const MainFlatListHeader = ({onData, onSearchData}) => {
-  const [text, setText] = useState();
-  const [filtredData, setFiltredData] = useState(onData);
+  let text = useState();
   const handleSearch = query => {
     const filtredText = query.trim().toLowerCase();
     const filtredResult = onData.filter(item => {
       return item.name.toLowerCase().includes(filtredText);
     });
-    setFiltredData(filtredResult);
     onSearchData(filtredResult);
   };
 

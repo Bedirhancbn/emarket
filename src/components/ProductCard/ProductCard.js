@@ -5,10 +5,15 @@ import {
   Image,
   TouchableWithoutFeedback,
 } from 'react-native';
-import React from 'react';
+import React, {useContext} from 'react';
 import styles from './ProductCard.style';
+import {ProductContext} from '../../context/ProductContext';
 
 function ProductCard({productList, navigationToDetail}) {
+  const {addCart} = useContext(ProductContext);
+  const onClick = () => {
+    addCart(productList.item);
+  };
   return (
     <View style={styles.container}>
       <View style={styles.feedback_container}>
@@ -20,7 +25,7 @@ function ProductCard({productList, navigationToDetail}) {
             />
             <Text style={styles.price}>{productList.item.price} ₺</Text>
             <Text style={styles.name}>{productList.item.name}</Text>
-            <TouchableOpacity style={styles.button}>
+            <TouchableOpacity style={styles.button} onPress={onClick}>
               <Text style={styles.button_text}>Add to Cart</Text>
             </TouchableOpacity>
           </View>

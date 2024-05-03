@@ -1,8 +1,14 @@
 import {View, Text, TouchableOpacity} from 'react-native';
-import React from 'react';
+import React, {useContext} from 'react';
 import styles from './CardCard.style';
+import {ProductContext} from '../../context/ProductContext';
 
 const CartCard = ({cartData}) => {
+  const {increaseQuantity} = useContext(ProductContext);
+  const increase = () => {
+    increaseQuantity(cartData);
+    console.log(cartData);
+  };
   return (
     <View style={styles.container}>
       <View style={styles.infoContainer}>
@@ -16,7 +22,7 @@ const CartCard = ({cartData}) => {
         <View style={styles.quantityContainer}>
           <Text style={styles.quantityText}>{cartData.item.quantity}</Text>
         </View>
-        <TouchableOpacity style={styles.buttons}>
+        <TouchableOpacity style={styles.buttons} onPress={increase}>
           <Text style={styles.buttons_text}>+</Text>
         </TouchableOpacity>
       </View>

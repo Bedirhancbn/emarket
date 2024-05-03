@@ -3,11 +3,11 @@ import React, {useContext, useEffect, useState} from 'react';
 import useFetch from '../../../hooks/useFetch';
 import Config from 'react-native-config';
 import ProductCard from '../../../components/ProductCard/ProductCard';
-import SearchCard from '../../../components/MainFlatListHeader';
+import MainFlatListHeader from '../../../components/MainFlatListHeader';
 
 const Main = ({navigation}) => {
   const {data: productData} = useFetch(Config.URL);
-  const [searchedData, setSearchedData] = useState(productData);
+  const [searchedData, setSearchedData] = useState();
 
   useEffect(() => {
     setSearchedData(productData);
@@ -33,7 +33,10 @@ const Main = ({navigation}) => {
         renderItem={renderProduct}
         numColumns={2}
         ListHeaderComponent={
-          <SearchCard onData={productData} onSearchData={setSearchedData} />
+          <MainFlatListHeader
+            onData={productData}
+            onSearchData={setSearchedData}
+          />
         }
       />
     </View>

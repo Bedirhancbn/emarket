@@ -1,35 +1,40 @@
 import {View, Text, FlatList, StyleSheet} from 'react-native';
-import React, {useContext, useState} from 'react';
+import React, {useContext, useEffect, useState} from 'react';
 import CartCard from '../../components/CartCard';
 import TotalCost from '../../components/TotalCost/TotalCost';
 import {ProductContext} from '../../context/ProductContext';
+import {useNavigation} from '@react-navigation/native';
 
 const Cart = () => {
-  const {deger, cartData} = useContext(ProductContext);
-  console.log([cartData]);
-  const data = [
-    {id: 1, name: 'samsung', price: 200, quantity: 1},
-    {id: 2, name: 'iphone', price: 250, quantity: 2},
-  ];
+  const {cartData} = useContext(ProductContext);
+  const navigation = useNavigation();
 
   let sum = 0;
-  data.forEach(item => {
-    sum += item.price;
-    /*  * item.quantity; */
+  cartData.forEach(item => {
+    sum += item.price * item.quantity;
   });
+  useEffect(() => {
+    navigation.setOptions({tabBarBadge: 1});
+  }, [cartData, navigation]);
 
   const renderCart = item => {
     return <CartCard cartData={item} />;
   };
   return (
     <View style={styles.container}>
-      <FlatList data={[cartData]} renderItem={renderCart} />
+      <FlatList
+        data={cartData}
+        renderItem={renderCart}
+        style={styles.containerFlatList}
+      />
       <TotalCost cost={sum} />
     </View>
   );
 };
+
 const styles = StyleSheet.create({
   container: {backgroundColor: '#fff', flex: 1},
+  containerFlatList: {marginBottom: 5},
 });
 
 export default Cart;
