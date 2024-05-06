@@ -1,12 +1,12 @@
-import {View, Text, FlatList, StyleSheet} from 'react-native';
-import React, {useContext, useEffect, useState} from 'react';
+import {View, FlatList, StyleSheet, Button} from 'react-native';
+import React, {useContext, useEffect} from 'react';
 import CartCard from '../../components/CartCard';
 import TotalCost from '../../components/TotalCost/TotalCost';
 import {ProductContext} from '../../context/ProductContext';
 import {useNavigation} from '@react-navigation/native';
 
 const Cart = () => {
-  const {cartData} = useContext(ProductContext);
+  const {cartData, getData} = useContext(ProductContext);
   const navigation = useNavigation();
 
   let sum = 0;
@@ -17,7 +17,7 @@ const Cart = () => {
     navigation.setOptions({tabBarBadge: 1});
   }, [cartData, navigation]);
 
-  const renderCart = item => {
+  const renderCart = ({item}) => {
     return <CartCard cartData={item} />;
   };
   return (
