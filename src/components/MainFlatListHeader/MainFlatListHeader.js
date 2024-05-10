@@ -1,8 +1,10 @@
 import {View, Text, TextInput, TouchableOpacity, Image} from 'react-native';
 import React, {useState} from 'react';
 import styles from './MainFlatListHeader.style';
+import {useNavigation} from '@react-navigation/native';
 
 const MainFlatListHeader = ({onData, onSearchData}) => {
+  const navigation = useNavigation();
   let text = useState();
   const handleSearch = query => {
     const filtredText = query.trim().toLowerCase();
@@ -27,10 +29,14 @@ const MainFlatListHeader = ({onData, onSearchData}) => {
           />
         </View>
       </View>
-      <View>
-        <Text>Filter</Text>
-        <TouchableOpacity>
-          <Text>Select Filter</Text>
+      <View style={styles.containerFilter}>
+        <Text style={styles.filterText}>Filters:</Text>
+        <TouchableOpacity
+          style={styles.filterButton}
+          onPress={() => {
+            navigation.navigate('Filter');
+          }}>
+          <Text style={styles.filterButtonText}>Select Filter</Text>
         </TouchableOpacity>
       </View>
     </View>

@@ -14,6 +14,7 @@ function ProductCard({productList, navigationToDetail}) {
   const onClick = () => {
     addCart(productList.item);
   };
+
   return (
     <View style={styles.container}>
       <View style={styles.feedback_container}>

@@ -1,30 +1,20 @@
 import React, {useEffect, useState} from 'react';
 import {createContext} from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import Config from 'react-native-config';
+import axios from 'react-native-axios';
 
 export const ProductContext = createContext();
 
 export const ProductProvider = props => {
   const [cartData, setCartData] = useState([]);
-
-  useEffect(() => {
-    const storeData = async () => {
-      try {
-        const jsonValue = JSON.stringify(cartData);
-        await AsyncStorage.setItem('my-key', jsonValue);
-      } catch (error) {
-        console.log('Store error:', error);
-      }
-    };
-    storeData();
-  }, [cartData]);
+  const [filtredBrands, setFiltredBrands] = useState([]);
 
   useEffect(() => {
     const getData = async () => {
       try {
-        const jsonValue = await AsyncStorage.getItem('my-key');
-        console.log(JSON.parse(jsonValue));
-        if (jsonValue != null) {
+        const jsonValue = await AsyncStorage.getItem('cart-key');
+        if (jsonValue !== null) {
           setCartData(JSON.parse(jsonValue));
         }
       } catch (error) {
@@ -33,6 +23,18 @@ export const ProductProvider = props => {
     };
     getData();
   }, []);
+
+  useEffect(() => {
+    const storeData = async () => {
+      try {
+        const jsonValue = JSON.stringify(cartData);
+        await AsyncStorage.setItem('cart-key', jsonValue);
+      } catch (error) {
+        console.log('Store error:', error);
+      }
+    };
+    storeData();
+  }, [cartData]);
 
   const addCart = oneProductData => {
     const alreadyAdded = cartData.some(
@@ -72,9 +74,23 @@ export const ProductProvider = props => {
     setCartData(updateQuantity);
   };
 
+  useEffect(() => {
+    axios(Config.URL).then(res => {
+      setFiltredBrands(res.data);
+      console.log(filtredBrands);
+    });
+  }, []);
+
   return (
     <ProductContext.Provider
-      value={{cartData, addCart, increaseQuantity, decreaseQuantity}}>
+      value={{
+        cartData,
+        addCart,
+        increaseQuantity,
+        decreaseQuantity,
+        filtredBrands,
+        setFiltredBrands,
+      }}>
       {props.children}
     </ProductContext.Provider>
   );

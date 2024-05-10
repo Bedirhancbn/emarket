@@ -39,12 +39,12 @@ function HomeScreen() {
           headerTitleAlign: 'center',
           headerStyle: {backgroundColor: '#2A59FE'},
         }}
-        sty
       />
       <Stack.Screen name="Filter" component={Filter} />
     </Stack.Navigator>
   );
 }
+
 function CartScreen() {
   return (
     <Stack.Navigator screenOptions={{headerShown: false}}>

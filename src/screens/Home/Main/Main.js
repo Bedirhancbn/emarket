@@ -1,4 +1,4 @@
-import {View, Text, FlatList, TextInput, StyleSheet} from 'react-native';
+import {View, FlatList, StyleSheet} from 'react-native';
 import React, {useContext, useEffect, useState} from 'react';
 import useFetch from '../../../hooks/useFetch';
 import Config from 'react-native-config';

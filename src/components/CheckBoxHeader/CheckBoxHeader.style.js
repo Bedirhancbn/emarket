@@ -10,7 +10,7 @@ export default StyleSheet.create({
     borderRadius: 5,
     flexDirection: 'row',
     padding: 5,
-    height: deviceSize.height / 18,
+    height: deviceSize.height / 16,
   },
   search_image: {
     justifyContent: 'center',
@@ -23,13 +23,4 @@ export default StyleSheet.create({
     width: deviceSize.width / 1.2,
   },
   marginTop: 10,
-  containerFilter: {marginHorizontal: 10, flexDirection: 'row', marginTop: 10},
-  filterText: {color: '#000', flex: 1, fontSize: 18},
-  filterButton: {
-    backgroundColor: '#e8e8e8',
-    paddingHorizontal: 40,
-    paddingVertical: 10,
-    borderRadius: 3,
-  },
-  filterButtonText: {color: '#000', fontSize: 16},
 });

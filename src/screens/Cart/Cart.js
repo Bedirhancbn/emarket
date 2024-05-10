@@ -6,7 +6,7 @@ import {ProductContext} from '../../context/ProductContext';
 import {useNavigation} from '@react-navigation/native';
 
 const Cart = () => {
-  const {cartData, getData} = useContext(ProductContext);
+  const {cartData} = useContext(ProductContext);
   const navigation = useNavigation();
 
   let sum = 0;

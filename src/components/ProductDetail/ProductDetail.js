@@ -1,4 +1,10 @@
-import {View, Text, Image, TouchableOpacity} from 'react-native';
+import {
+  View,
+  Text,
+  Image,
+  TouchableOpacity,
+  ActivityIndicator,
+} from 'react-native';
 import React, {useContext} from 'react';
 import useFetch from '../../hooks/useFetch';
 import Config from 'react-native-config';
@@ -41,7 +47,7 @@ const ProductDetail = ({productId}) => {
         </View>
       ) : (
         <View>
-          <Text>NO data</Text>
+          <ActivityIndicator size="large" />
         </View>
       )}
     </View>
