@@ -1,17 +1,15 @@
 import {View, FlatList, StyleSheet} from 'react-native';
-import React, {useContext, useEffect, useState} from 'react';
-import useFetch from '../../../hooks/useFetch';
-import Config from 'react-native-config';
+import React, {useContext, useEffect} from 'react';
 import ProductCard from '../../../components/ProductCard/ProductCard';
 import MainFlatListHeader from '../../../components/MainFlatListHeader';
+import {ProductContext} from '../../../context/ProductContext';
 
 const Main = ({navigation}) => {
-  const {data: productData} = useFetch(Config.URL);
-  const [searchedData, setSearchedData] = useState();
+  const {mainData, searchedData, setSearchedData} = useContext(ProductContext);
 
   useEffect(() => {
-    setSearchedData(productData);
-  }, [productData]);
+    setSearchedData(mainData);
+  }, [mainData, setSearchedData]);
 
   const navigateToDetail = id => {
     navigation.navigate('Detail', {id});
@@ -29,15 +27,10 @@ const Main = ({navigation}) => {
   return (
     <View style={styles.container}>
       <FlatList
-        data={searchedData}
+        data={mainData}
         renderItem={renderProduct}
         numColumns={2}
-        ListHeaderComponent={
-          <MainFlatListHeader
-            onData={productData}
-            onSearchData={setSearchedData}
-          />
-        }
+        ListHeaderComponent={<MainFlatListHeader />}
       />
     </View>
   );

@@ -12,7 +12,6 @@ const CheckBoxHeader = ({onData, searchData}) => {
       return item.brand.toLowerCase().includes(formattedText);
     });
     searchData(filtredResult);
-    console.log(filtredResult);
   };
   return (
     <View style={styles.container}>

@@ -7,7 +7,12 @@ import axios from 'react-native-axios';
 export const ProductContext = createContext();
 
 export const ProductProvider = props => {
+  const [mainData, setMainData] = useState([]);
+  const [mainFilterData, setMainFilterData] = useState([]);
+
+  const [searchedData, setSearchedData] = useState();
   const [cartData, setCartData] = useState([]);
+  const [radioButtonValue, setRadioButtonValue] = useState();
   const [filtredBrands, setFiltredBrands] = useState([]);
 
   useEffect(() => {
@@ -76,20 +81,28 @@ export const ProductProvider = props => {
 
   useEffect(() => {
     axios(Config.URL).then(res => {
+      setMainData(res.data);
       setFiltredBrands(res.data);
-      console.log(filtredBrands);
     });
   }, []);
 
   return (
     <ProductContext.Provider
       value={{
+        mainData,
+        setMainData,
+        mainFilterData,
+        setMainFilterData,
         cartData,
         addCart,
         increaseQuantity,
         decreaseQuantity,
         filtredBrands,
         setFiltredBrands,
+        radioButtonValue,
+        setRadioButtonValue,
+        searchedData,
+        setSearchedData,
       }}>
       {props.children}
     </ProductContext.Provider>

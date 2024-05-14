@@ -1,17 +1,21 @@
 import {View, Text, TextInput, TouchableOpacity, Image} from 'react-native';
-import React, {useState} from 'react';
+import React, {useContext, useState} from 'react';
 import styles from './MainFlatListHeader.style';
 import {useNavigation} from '@react-navigation/native';
+import {ProductContext} from '../../context/ProductContext';
 
-const MainFlatListHeader = ({onData, onSearchData}) => {
+const MainFlatListHeader = () => {
+  const {setSearchedData, searchedData} = useContext(ProductContext);
+
   const navigation = useNavigation();
   let text = useState();
   const handleSearch = query => {
     const filtredText = query.trim().toLowerCase();
-    const filtredResult = onData.filter(item => {
+    const filtredResult = searchedData.filter(item => {
       return item.name.toLowerCase().includes(filtredText);
     });
-    onSearchData(filtredResult);
+    setSearchedData(filtredResult);
+    console.log(filtredResult);
   };
 
   return (

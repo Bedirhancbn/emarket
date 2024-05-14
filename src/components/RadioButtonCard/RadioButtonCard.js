@@ -1,31 +1,33 @@
 import {View, Text} from 'react-native';
-import React, {useMemo, useState} from 'react';
+import React, {useContext, useMemo, useState} from 'react';
 import RadioGroup from 'react-native-radio-buttons-group';
 import styles from './RadioButtonCard.style';
+import {ProductContext} from '../../context/ProductContext';
 
 const RadioButtonCard = () => {
+  const {setRadioButtonValue} = useContext(ProductContext);
   const radioButtons = useMemo(
     () => [
       {
-        id: '1',
+        id: 1,
         label: 'Old to new',
         value: 'option1',
         color: 'blue',
       },
       {
-        id: '2',
+        id: 2,
         label: 'New to old',
         value: 'option2',
         color: 'blue',
       },
       {
-        id: '3',
+        id: 3,
         label: 'Price hight to low',
         value: 'option3',
         color: 'blue',
       },
       {
-        id: '4',
+        id: 4,
         label: 'Price low to hight',
         value: 'option4',
         color: 'blue',
@@ -37,7 +39,9 @@ const RadioButtonCard = () => {
 
   const handleSelect = selectedRadioButton => {
     setSelectedId(selectedRadioButton);
+    setRadioButtonValue(selectedRadioButton);
   };
+
   return (
     <View>
       <View style={styles.container}>

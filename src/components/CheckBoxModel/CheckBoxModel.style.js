@@ -3,7 +3,11 @@ import {Dimensions, StyleSheet} from 'react-native';
 const sizeDevice = Dimensions.get('screen');
 
 export default StyleSheet.create({
-  container: {backgroundColor: '#fff', padding: 10},
+  container: {
+    backgroundColor: '#fff',
+    padding: 10,
+    height: sizeDevice.height / 4.2,
+  },
   title_text: {color: '#7b7b7b', paddingBottom: 10, fontSize: 15},
   flatList: {height: sizeDevice.height / 10, maxWidth: sizeDevice.width / 1},
   checkBox: {borderRadius: 5},

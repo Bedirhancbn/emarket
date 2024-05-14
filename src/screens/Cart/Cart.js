@@ -13,6 +13,7 @@ const Cart = () => {
   cartData.forEach(item => {
     sum += item.price * item.quantity;
   });
+
   useEffect(() => {
     navigation.setOptions({tabBarBadge: 1});
   }, [cartData, navigation]);
@@ -20,6 +21,7 @@ const Cart = () => {
   const renderCart = ({item}) => {
     return <CartCard cartData={item} />;
   };
+
   return (
     <View style={styles.container}>
       <FlatList

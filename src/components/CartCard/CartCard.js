@@ -5,12 +5,14 @@ import {ProductContext} from '../../context/ProductContext';
 
 const CartCard = ({cartData}) => {
   const {increaseQuantity, decreaseQuantity} = useContext(ProductContext);
+
   const increase = () => {
     increaseQuantity(cartData.id);
   };
   const decrease = () => {
     decreaseQuantity(cartData.id);
   };
+
   return (
     <View style={styles.container}>
       <View style={styles.infoContainer}>

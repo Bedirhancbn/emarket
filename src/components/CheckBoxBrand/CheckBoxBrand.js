@@ -1,37 +1,45 @@
 import {View, Text, FlatList} from 'react-native';
-import React, {useContext, useEffect, useState} from 'react';
+import React, {useContext, useEffect} from 'react';
 import styles from './CheckBoxBrand.style';
 import CheckBox from 'expo-checkbox';
 import CheckBoxHeader from '../CheckBoxHeader';
 import {ProductContext} from '../../context/ProductContext';
 
-const CheckBoxBrand = ({onData}) => {
-  const [data, setData] = useState(onData);
+const CheckBoxBrand = () => {
+  const {mainFilterData, setMainFilterData, filtredBrands, setFiltredBrands} =
+    useContext(ProductContext);
+
+  const updatedBrands = filtredBrands.map(brand => ({
+    ...brand,
+    isChecked: false,
+  }));
 
   useEffect(() => {
-    if (onData) {
-      const filtredData = onData.reduce((array, nextItem) => {
+    if (updatedBrands) {
+      const filtredData = updatedBrands.reduce((array, nextItem) => {
         if (!array.some(item => item.brand === nextItem.brand)) {
           array.push(nextItem);
         }
         return array;
       }, []);
-      setData(filtredData);
+      setFiltredBrands(filtredData);
     }
-  }, [onData]);
+  }, []);
 
   const onChangeValue = (item, index, newValue) => {
-    const newData = data.map(newItem => {
+    console.log('seçilen veri', item.brand);
+    const newData = filtredBrands.map(newItem => {
       if (newItem.id === item.id) {
         return {
           ...newItem,
-          selected: newValue,
+          isChecked: newValue,
         };
       }
       return newItem;
     });
-    setData(newData);
-    console.log(newData);
+    setFiltredBrands(newData);
+    setMainFilterData([...mainFilterData, {...item}]);
+    console.log(mainFilterData);
   };
 
   const renderBrand = ({item, index}) => {
@@ -39,7 +47,7 @@ const CheckBoxBrand = ({onData}) => {
       <View style={styles.render_container}>
         <CheckBox
           style={styles.chechkBox}
-          value={item.selected}
+          value={item.isChecked}
           onValueChange={newValue => onChangeValue(item, index, newValue)}
           color={'blue'}
         />
@@ -54,10 +62,13 @@ const CheckBoxBrand = ({onData}) => {
         <Text style={styles.title_text}>Brand</Text>
         <FlatList
           style={styles.flatList}
-          data={data}
+          data={filtredBrands}
           renderItem={renderBrand}
           ListHeaderComponent={
-            <CheckBoxHeader onData={data} searchData={setData} />
+            <CheckBoxHeader
+              onData={filtredBrands}
+              searchData={setFiltredBrands}
+            />
           }
         />
       </View>

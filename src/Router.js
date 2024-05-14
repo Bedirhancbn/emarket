@@ -18,29 +18,33 @@ const Tab = createBottomTabNavigator();
 function HomeScreen() {
   return (
     <Stack.Navigator screenOptions={{headerShown: false}}>
-      <Stack.Screen
-        name="Main"
-        component={Main}
-        options={{
-          headerShown: true,
-          title: 'E-market',
-          headerStyle: {backgroundColor: '#2A59FE'},
-          headerTitleStyle: {fontWeight: '900', fontSize: 28},
-          headerTintColor: '#fff',
-        }}
-      />
-      <Stack.Screen
-        name="Detail"
-        component={Detail}
-        options={{
-          headerShown: true,
-          title: '',
-          headerTintColor: '#fff',
-          headerTitleAlign: 'center',
-          headerStyle: {backgroundColor: '#2A59FE'},
-        }}
-      />
-      <Stack.Screen name="Filter" component={Filter} />
+      <Stack.Group>
+        <Stack.Screen
+          name="Main"
+          component={Main}
+          options={{
+            headerShown: true,
+            title: 'E-market',
+            headerStyle: {backgroundColor: '#2A59FE'},
+            headerTitleStyle: {fontWeight: '900', fontSize: 28},
+            headerTintColor: '#fff',
+          }}
+        />
+        <Stack.Screen
+          name="Detail"
+          component={Detail}
+          options={{
+            headerShown: true,
+            title: '',
+            headerTintColor: '#fff',
+            headerTitleAlign: 'center',
+            headerStyle: {backgroundColor: '#2A59FE'},
+          }}
+        />
+      </Stack.Group>
+      <Stack.Group screenOptions={{presentation: 'modal'}}>
+        <Stack.Screen name="Filter" component={Filter} />
+      </Stack.Group>
     </Stack.Navigator>
   );
 }

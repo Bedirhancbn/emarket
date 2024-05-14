@@ -1,10 +1,14 @@
 import {View, Text, FlatList} from 'react-native';
-import React, {useState} from 'react';
+import React, {useContext, useState} from 'react';
 import CheckBox from 'expo-checkbox';
 import styles from './CheckBoxModel.style';
+import {ProductContext} from '../../context/ProductContext';
+import CheckBoxHeader from '../CheckBoxHeader';
 
 const CheckBoxModel = ({onData}) => {
   const [toggleCheckBox, setToggleCheckBox] = useState(false);
+  const {filtredBrands, setFiltredBrands} = useContext(ProductContext);
+
   const renderModel = ({item}) => {
     return (
       <View style={styles.render_container}>
@@ -25,6 +29,7 @@ const CheckBoxModel = ({onData}) => {
         data={onData}
         renderItem={renderModel}
         style={styles.flatList}
+        ListHeaderComponent={<CheckBoxHeader />}
       />
     </View>
   );
