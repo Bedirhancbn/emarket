@@ -7,13 +7,17 @@ import axios from 'react-native-axios';
 export const ProductContext = createContext();
 
 export const ProductProvider = props => {
-  const [mainData, setMainData] = useState([]);
+  const [originData, setOriginData] = useState([]);
+  const [mainData, setMainData] = useState([]); // Bu ana ekranda ilk gösterilen data filtreleme uygulamadan ilk gelen
+  const [homeScreenData, setHomeScreenData] = useState([]); // bu ana ekrandaki filtrelendiyse filtrelenmiş değilsede ana datayı bulunduruyor
+  const [chechkBoxBrands, setChechkBoxBrands] = useState([]); // ekranda gözüken checkbox benzersiz verileri
+  const [searchCheckBoxBrands, setSearchCheckBoxBrands] = useState([]);
+  const [filteredModels, setFilteredModels] = useState([]);
+
   const [mainFilterData, setMainFilterData] = useState([]);
 
-  const [searchedData, setSearchedData] = useState();
   const [cartData, setCartData] = useState([]);
-  const [radioButtonValue, setRadioButtonValue] = useState();
-  const [filtredBrands, setFiltredBrands] = useState([]);
+  const [radioButtonValue, setRadioButtonValue] = useState(0);
 
   useEffect(() => {
     const getData = async () => {
@@ -81,28 +85,37 @@ export const ProductProvider = props => {
 
   useEffect(() => {
     axios(Config.URL).then(res => {
+      setOriginData(res.data);
       setMainData(res.data);
-      setFiltredBrands(res.data);
+      setHomeScreenData(res.data);
+      setChechkBoxBrands(res.data);
     });
   }, []);
 
   return (
     <ProductContext.Provider
       value={{
-        mainData,
+        originData, // hiçbir manüpülasyon yapılmadan saf data
+        setOriginData,
+        mainData, // ekranda ilk gözüken data
         setMainData,
-        mainFilterData,
+        mainFilterData, // bütün filtrelemeler elde edildikten sonraki data
         setMainFilterData,
+        homeScreenData, // filtreleme yapılmış veya yapılmamış ana ekranda gözükecek data
+        setHomeScreenData,
+        chechkBoxBrands, // bu markaların checkbox verisi ekranda gözüken
+        setChechkBoxBrands,
+        searchCheckBoxBrands,
+        setSearchCheckBoxBrands,
+        filteredModels,
+        setFilteredModels,
+
         cartData,
         addCart,
         increaseQuantity,
         decreaseQuantity,
-        filtredBrands,
-        setFiltredBrands,
         radioButtonValue,
         setRadioButtonValue,
-        searchedData,
-        setSearchedData,
       }}>
       {props.children}
     </ProductContext.Provider>

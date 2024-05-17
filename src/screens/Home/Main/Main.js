@@ -5,11 +5,16 @@ import MainFlatListHeader from '../../../components/MainFlatListHeader';
 import {ProductContext} from '../../../context/ProductContext';
 
 const Main = ({navigation}) => {
-  const {mainData, searchedData, setSearchedData} = useContext(ProductContext);
+  const {mainData, mainFilterData, homeScreenData, setHomeScreenData} =
+    useContext(ProductContext);
 
   useEffect(() => {
-    setSearchedData(mainData);
-  }, [mainData, setSearchedData]);
+    if (mainFilterData.length > 0) {
+      setHomeScreenData(mainFilterData);
+    } else {
+      setHomeScreenData(mainData);
+    }
+  }, [mainData, mainFilterData, setHomeScreenData]);
 
   const navigateToDetail = id => {
     navigation.navigate('Detail', {id});
@@ -19,7 +24,7 @@ const Main = ({navigation}) => {
     return (
       <ProductCard
         productList={item}
-        navigationToDetail={() => navigateToDetail(item.index)}
+        navigationToDetail={() => navigateToDetail(item.item.id - 1)}
       />
     );
   };
@@ -27,7 +32,7 @@ const Main = ({navigation}) => {
   return (
     <View style={styles.container}>
       <FlatList
-        data={mainData}
+        data={homeScreenData}
         renderItem={renderProduct}
         numColumns={2}
         ListHeaderComponent={<MainFlatListHeader />}

@@ -6,29 +6,21 @@ import CheckBoxHeader from '../CheckBoxHeader';
 import {ProductContext} from '../../context/ProductContext';
 
 const CheckBoxBrand = () => {
-  const {mainFilterData, setMainFilterData, filtredBrands, setFiltredBrands} =
-    useContext(ProductContext);
-
-  const updatedBrands = filtredBrands.map(brand => ({
-    ...brand,
-    isChecked: false,
-  }));
+  const {chechkBoxBrands, setChechkBoxBrands} = useContext(ProductContext);
 
   useEffect(() => {
-    if (updatedBrands) {
-      const filtredData = updatedBrands.reduce((array, nextItem) => {
-        if (!array.some(item => item.brand === nextItem.brand)) {
-          array.push(nextItem);
-        }
-        return array;
-      }, []);
-      setFiltredBrands(filtredData);
-    }
+    const chechkBoxBrandData = chechkBoxBrands.reduce((array, nextItem) => {
+      if (!array.some(item => item.brand === nextItem.brand)) {
+        array.push(nextItem);
+      }
+      return array;
+    }, []);
+    setChechkBoxBrands(chechkBoxBrandData);
   }, []);
 
   const onChangeValue = (item, index, newValue) => {
     console.log('seçilen veri', item.brand);
-    const newData = filtredBrands.map(newItem => {
+    const newData = chechkBoxBrands.map(newItem => {
       if (newItem.id === item.id) {
         return {
           ...newItem,
@@ -37,15 +29,14 @@ const CheckBoxBrand = () => {
       }
       return newItem;
     });
-    setFiltredBrands(newData);
-    setMainFilterData([...mainFilterData, {...item}]);
-    console.log(mainFilterData);
+    setChechkBoxBrands(newData);
   };
 
   const renderBrand = ({item, index}) => {
     return (
       <View style={styles.render_container}>
         <CheckBox
+          isChecked={false}
           style={styles.chechkBox}
           value={item.isChecked}
           onValueChange={newValue => onChangeValue(item, index, newValue)}
@@ -62,14 +53,9 @@ const CheckBoxBrand = () => {
         <Text style={styles.title_text}>Brand</Text>
         <FlatList
           style={styles.flatList}
-          data={filtredBrands}
+          data={chechkBoxBrands}
           renderItem={renderBrand}
-          ListHeaderComponent={
-            <CheckBoxHeader
-              onData={filtredBrands}
-              searchData={setFiltredBrands}
-            />
-          }
+          ListHeaderComponent={<CheckBoxHeader />}
         />
       </View>
       <View style={styles.seperator} />
