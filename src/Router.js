@@ -113,7 +113,7 @@ function App() {
             component={CartScreen}
             options={{
               title: '',
-              tabBarBadge: 3,
+              tabBarBadge: 4,
               tabBarIcon: () => {
                 return (
                   <Image

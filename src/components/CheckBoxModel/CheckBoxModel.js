@@ -4,11 +4,20 @@ import CheckBox from 'expo-checkbox';
 import styles from './CheckBoxModel.style';
 import {ProductContext} from '../../context/ProductContext';
 import CheckBoxHeader from '../CheckBoxHeader';
+import {useNavigation} from '@react-navigation/native';
 
-const CheckBoxModel = ({onData}) => {
-  const [toggleCheckBox, setToggleCheckBox] = useState(false);
+const CheckBoxModel = () => {
   const {mainData, chechkBoxBrands, filteredModels, setFilteredModels} =
     useContext(ProductContext);
+  const [selectedModels, setSelectedModels] = useState([]);
+  const navigation = useNavigation();
+
+  useEffect(() => {
+    const unsubscribe = navigation.addListener('beforeRemove', () => {
+      setSelectedModels([]);
+    });
+    return unsubscribe;
+  }, [navigation]);
 
   useEffect(() => {
     const selectedBrands = chechkBoxBrands
@@ -17,39 +26,43 @@ const CheckBoxModel = ({onData}) => {
 
     const models = mainData
       .filter(item => selectedBrands.includes(item.brand))
-      .map(item => item.model);
-
-    setFilteredModels([...new Set(models)]);
-  }, [chechkBoxBrands, mainData, setFilteredModels]);
+      .map(item => ({
+        model: item.model,
+        isChecked: selectedModels.includes(item.model),
+      }));
+    setFilteredModels(models);
+  }, [chechkBoxBrands, mainData, setFilteredModels, selectedModels]);
 
   const onChangeValue = (item, index, newValue) => {
-    console.log('seçilen veri', item.brand);
-    const newData = filteredModels.map(newItem => {
-      if (newItem.id === item.id) {
-        return {
-          ...newItem,
-          isChecked: newValue,
-        };
+    const updatedModels = filteredModels.map((model, indexx) => {
+      if (indexx === index) {
+        return {...model, isChecked: newValue};
       }
-      return newItem;
+      return model;
     });
-    setFilteredModels(newData);
+    setFilteredModels(updatedModels);
+
+    if (newValue) {
+      setSelectedModels([...selectedModels, item.model]);
+    } else {
+      setSelectedModels(selectedModels.filter(model => model !== item.model));
+    }
   };
 
   const renderModel = ({item, index}) => {
     return (
       <View style={styles.render_container}>
         <CheckBox
-          isChecked={false}
+          value={item.isChecked}
           style={styles.checkBox}
-          value={toggleCheckBox}
           onValueChange={newValue => onChangeValue(item, index, newValue)}
           color={'blue'}
         />
-        <Text style={styles.render_text}>{item}</Text>
+        <Text style={styles.render_text}>{item.model}</Text>
       </View>
     );
   };
+
   return (
     <View style={styles.container}>
       <Text style={styles.title_text}>Model</Text>
@@ -62,4 +75,5 @@ const CheckBoxModel = ({onData}) => {
     </View>
   );
 };
+
 export default CheckBoxModel;

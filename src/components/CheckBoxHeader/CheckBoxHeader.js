@@ -5,19 +5,26 @@ import {ProductContext} from '../../context/ProductContext';
 
 const CheckBoxHeader = () => {
   const {chechkBoxBrands, setChechkBoxBrands} = useContext(ProductContext);
-  const [copyCheckBoxData, setCopyCheckBoxData] = useState(chechkBoxBrands);
-  useEffect(() => {
-    setCopyCheckBoxData(chechkBoxBrands);
-  }, [chechkBoxBrands]);
+  const [originalCheckBoxData, setOriginalCheckBoxData] = useState([
+    ...chechkBoxBrands,
+  ]);
   const [searchText, setSearchText] = useState('');
+
+  useEffect(() => {
+    setOriginalCheckBoxData([...chechkBoxBrands]);
+  }, [chechkBoxBrands]);
 
   const handleSearch = query => {
     setSearchText(query);
     const formattedText = query.trim().toLowerCase();
-    const filtredResult = copyCheckBoxData.filter(item => {
-      return item.brand.toLowerCase().includes(formattedText);
-    });
-    setChechkBoxBrands(filtredResult);
+    if (formattedText.length === 0) {
+      setChechkBoxBrands([...originalCheckBoxData]);
+    } else {
+      const filteredResult = originalCheckBoxData.filter(item => {
+        return item.brand.toLowerCase().includes(formattedText);
+      });
+      setChechkBoxBrands([...filteredResult]);
+    }
   };
 
   return (

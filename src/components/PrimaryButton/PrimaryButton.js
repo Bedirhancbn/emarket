@@ -1,49 +1,54 @@
 import {Text, TouchableOpacity, View} from 'react-native';
-import React, {useContext, useState} from 'react';
+import React, {useContext, useEffect} from 'react';
 import styles from './PrimaryButton.style';
 import {ProductContext} from '../../context/ProductContext';
+import {useNavigation} from '@react-navigation/native';
 
 const PrimaryButton = () => {
   const {
     radioButtonValue,
     setRadioButtonValue,
     mainData,
-    mainFilterData,
+    originData,
     setMainFilterData,
     chechkBoxBrands,
+    filteredModels,
   } = useContext(ProductContext);
+  const navigation = useNavigation();
 
-  const [copyData, setCopyData] = useState(mainData);
-  const [copyData2, setCopyData2] = useState(mainData);
-  const [copyData3, setCopyData3] = useState(mainData);
-  const [copyData4, setCopyData4] = useState(mainData);
+  useEffect(() => {
+    const unsubscribe = navigation.addListener('focus', () => {
+      setMainFilterData(originData);
+    });
+
+    return unsubscribe;
+  }, [navigation, setMainFilterData, originData]);
 
   const handleFilterClick = () => {
-    setCopyData2([]);
-    console.log(copyData2);
+    let filteredData = [...mainData];
+
     if (radioButtonValue !== 0) {
-      let sortedData = [...mainData];
       switch (radioButtonValue) {
         case 1:
-          sortedData.sort(
+          filteredData.sort(
             (a, b) => new Date(a.createdAt) - new Date(b.createdAt),
           );
           break;
         case 2:
-          sortedData.sort(
+          filteredData.sort(
             (a, b) => new Date(b.createdAt) - new Date(a.createdAt),
           );
           break;
         case 3:
-          sortedData.sort((a, b) => b.price - a.price);
+          filteredData.sort((a, b) => b.price - a.price);
           break;
         case 4:
-          sortedData.sort((a, b) => a.price - b.price);
+          filteredData.sort((a, b) => a.price - b.price);
           break;
         default:
           break;
       }
-      setMainFilterData(sortedData);
+      setMainFilterData(filteredData);
       setRadioButtonValue(0);
     }
 
@@ -51,9 +56,22 @@ const PrimaryButton = () => {
       .filter(brand => brand.isChecked)
       .map(brand => brand.brand);
 
-    const filteredData = mainFilterData.filter(item =>
+    filteredData = filteredData.filter(item =>
       selectedBrands.includes(item.brand),
     );
+    console.log(filteredData);
+
+    const selectedModels = filteredModels
+      .filter(model => model.isChecked)
+      .map(model => model.model);
+
+    if (selectedModels.length > 0) {
+      filteredData = filteredData.filter(item =>
+        selectedModels.includes(item.model),
+      );
+    }
+
+    setMainFilterData(filteredData);
   };
 
   return (
