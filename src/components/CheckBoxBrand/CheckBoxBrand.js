@@ -60,7 +60,7 @@ const CheckBoxBrand = () => {
           style={styles.flatList}
           data={chechkBoxBrands}
           renderItem={renderBrand}
-          ListHeaderComponent={<CheckBoxHeader />}
+          ListHeaderComponent={<CheckBoxHeader searchData={chechkBoxBrands} />}
         />
       </View>
       <View style={styles.seperator} />

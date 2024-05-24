@@ -5,14 +5,31 @@ import {
   Image,
   TouchableWithoutFeedback,
 } from 'react-native';
-import React, {useContext} from 'react';
+import React, {useContext, useState, useEffect} from 'react';
 import styles from './ProductCard.style';
 import {ProductContext} from '../../context/ProductContext';
 
 function ProductCard({productList, navigationToDetail}) {
-  const {addCart} = useContext(ProductContext);
-  const onClick = () => {
+  const {addCart, addFav, favData, removeFav} = useContext(ProductContext);
+  const [already, setAlready] = useState(false);
+
+  useEffect(() => {
+    const isFavorite = favData.some(
+      favItem => favItem.id === productList.item.id,
+    );
+    setAlready(isFavorite);
+  }, [favData, productList.item.id]);
+
+  const onClickAddCart = () => {
     addCart(productList.item);
+  };
+
+  const onClickFav = () => {
+    if (already) {
+      removeFav(productList.item);
+    } else {
+      addFav(productList.item);
+    }
   };
 
   return (
@@ -26,11 +43,20 @@ function ProductCard({productList, navigationToDetail}) {
             />
             <Text style={styles.price}>{productList.item.price} ₺</Text>
             <Text style={styles.name}>{productList.item.name}</Text>
-            <TouchableOpacity style={styles.button} onPress={onClick}>
+            <TouchableOpacity style={styles.button} onPress={onClickAddCart}>
               <Text style={styles.button_text}>Add to Cart</Text>
             </TouchableOpacity>
           </View>
         </TouchableWithoutFeedback>
+        <TouchableOpacity style={styles.imageContainer} onPress={onClickFav}>
+          <Image
+            source={
+              already
+                ? require('../../assets/images/star_open.png')
+                : require('../../assets/images/star_close.png')
+            }
+          />
+        </TouchableOpacity>
       </View>
     </View>
   );

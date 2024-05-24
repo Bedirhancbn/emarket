@@ -1,20 +1,17 @@
 import {View} from 'react-native';
-import React, {useEffect} from 'react';
+import React, {useContext, useEffect} from 'react';
 import ProductDetail from '../../../components/ProductDetail';
 import {useNavigation} from '@react-navigation/native';
-import useFetch from '../../../hooks/useFetch';
-import Config from 'react-native-config';
+import {ProductContext} from '../../../context/ProductContext';
 
 const Detail = ({route}) => {
   const {id} = route.params;
   const navigation = useNavigation();
-  const {data: productHeader} = useFetch(Config.URL);
+  const {originData} = useContext(ProductContext);
 
   useEffect(() => {
-    if (productHeader) {
-      navigation.setOptions({title: productHeader[id].name});
-    }
-  }, [productHeader, id, navigation]);
+    navigation.setOptions({title: originData[id].name});
+  }, [originData, id, navigation]);
 
   return (
     <View>

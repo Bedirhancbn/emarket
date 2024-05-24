@@ -5,7 +5,7 @@ import {
   TouchableOpacity,
   ActivityIndicator,
 } from 'react-native';
-import React, {useContext} from 'react';
+import React, {useContext, useEffect, useState} from 'react';
 import useFetch from '../../hooks/useFetch';
 import Config from 'react-native-config';
 import styles from './ProductDetail.style';
@@ -13,27 +13,53 @@ import {ProductContext} from '../../context/ProductContext';
 
 const ProductDetail = ({productId}) => {
   const {data: detailData} = useFetch(Config.URL);
-  const {addCart} = useContext(ProductContext);
+  const {addCart, addFav, favData, removeFav, originData} =
+    useContext(ProductContext);
+  const [already, setAlready] = useState(false);
+
+  useEffect(() => {
+    const isFavorite = favData.some(
+      favItem => favItem.id === originData[productId].id,
+    );
+    setAlready(isFavorite);
+  }, [favData, originData, productId]);
+
+  const onClickFav = () => {
+    if (already) {
+      removeFav(originData[productId]);
+    } else {
+      addFav(originData[productId]);
+    }
+  };
   const handleClick = () => {
-    addCart(detailData[productId]);
+    addCart(originData[productId]);
   };
   return (
     <View>
-      {detailData ? (
+      {originData ? (
         <View style={styles.container}>
           <Image
-            source={{uri: detailData[productId].image}}
+            source={{uri: originData[productId].image}}
             style={styles.image}
           />
-          <Text style={styles.text_name}>{detailData[productId].name}</Text>
+          <TouchableOpacity style={styles.imageContainer} onPress={onClickFav}>
+            <Image
+              source={
+                already
+                  ? require('../../assets/images/star_open.png')
+                  : require('../../assets/images/star_close.png')
+              }
+            />
+          </TouchableOpacity>
+          <Text style={styles.text_name}>{originData[productId].name}</Text>
           <Text style={styles.text_description}>
-            {detailData[productId].description}
+            {originData[productId].description}
           </Text>
           <View style={styles.container_bottom}>
             <View style={styles.container_price}>
               <Text style={styles.text_price}>Price:</Text>
               <Text style={styles.text_product_price}>
-                {detailData[productId].price} ₺
+                {originData[productId].price} ₺
               </Text>
             </View>
             <View>

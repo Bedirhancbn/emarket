@@ -1,4 +1,4 @@
-import {View, FlatList, StyleSheet} from 'react-native';
+import {View, FlatList, StyleSheet, Text} from 'react-native';
 import React, {useContext, useEffect} from 'react';
 import ProductCard from '../../../components/ProductCard/ProductCard';
 import MainFlatListHeader from '../../../components/MainFlatListHeader';

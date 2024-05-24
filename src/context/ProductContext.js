@@ -17,14 +17,19 @@ export const ProductProvider = props => {
   const [mainFilterData, setMainFilterData] = useState([]);
 
   const [cartData, setCartData] = useState([]);
+  const [favData, setFavData] = useState([]);
   const [radioButtonValue, setRadioButtonValue] = useState(0);
 
   useEffect(() => {
     const getData = async () => {
       try {
         const jsonValue = await AsyncStorage.getItem('cart-key');
+        const jsonValueFav = await AsyncStorage.getItem('fav-key');
         if (jsonValue !== null) {
           setCartData(JSON.parse(jsonValue));
+        }
+        if (jsonValueFav !== null) {
+          setFavData(JSON.parse(jsonValueFav));
         }
       } catch (error) {
         console.log('Get data error:', error);
@@ -37,13 +42,15 @@ export const ProductProvider = props => {
     const storeData = async () => {
       try {
         const jsonValue = JSON.stringify(cartData);
+        const jsonValueFav = JSON.stringify(favData);
         await AsyncStorage.setItem('cart-key', jsonValue);
+        await AsyncStorage.setItem('fav-key', jsonValueFav);
       } catch (error) {
         console.log('Store error:', error);
       }
     };
     storeData();
-  }, [cartData]);
+  }, [cartData, favData]);
 
   const addCart = oneProductData => {
     const alreadyAdded = cartData.some(
@@ -55,6 +62,24 @@ export const ProductProvider = props => {
     } else {
       console.log('Product already added cart.');
     }
+  };
+
+  const addFav = oneProductData => {
+    const alreadyAdded = favData.some(
+      element => element.id === oneProductData.id,
+    );
+    if (!alreadyAdded) {
+      setFavData([...favData, {...oneProductData, isFav: true}]);
+      console.log('Product add successfully fav');
+    } else {
+      console.log('Product already added fav.');
+    }
+  };
+
+  const removeFav = oneFavData => {
+    setFavData(prevFavData =>
+      prevFavData.filter(element => element.id !== oneFavData.id),
+    );
   };
 
   const increaseQuantity = idQuantity => {
@@ -111,7 +136,10 @@ export const ProductProvider = props => {
         setFilteredModels,
 
         cartData,
+        favData, // fav veri
+        removeFav, // fav veri silme
         addCart,
+        addFav,
         increaseQuantity,
         decreaseQuantity,
         radioButtonValue,

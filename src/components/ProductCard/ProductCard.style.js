@@ -29,4 +29,10 @@ export default StyleSheet.create({
     fontSize: 18,
   },
   feedback_container: {padding: 10, backgroundColor: '#fff'},
+  imageContainer: {
+    width: sizeOfDevice.width / 10,
+    height: 0,
+    top: -250,
+    left: 115,
+  },
 });

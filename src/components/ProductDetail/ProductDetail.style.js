@@ -45,4 +45,9 @@ export default StyleSheet.create({
     fontSize: 20,
     fontWeight: 'bold',
   },
+  imageContainer: {
+    height: 0,
+    top: -250,
+    left: 330,
+  },
 });

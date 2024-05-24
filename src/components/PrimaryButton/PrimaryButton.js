@@ -59,7 +59,6 @@ const PrimaryButton = () => {
     filteredData = filteredData.filter(item =>
       selectedBrands.includes(item.brand),
     );
-    console.log(filteredData);
 
     const selectedModels = filteredModels
       .filter(model => model.isChecked)
@@ -70,8 +69,9 @@ const PrimaryButton = () => {
         selectedModels.includes(item.model),
       );
     }
-
-    setMainFilterData(filteredData);
+    if (filteredData.length > 0) {
+      setMainFilterData(filteredData);
+    }
   };
 
   return (
