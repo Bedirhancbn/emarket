@@ -1,6 +1,6 @@
 import {View, Text, TouchableOpacity} from 'react-native';
 import React, {useContext} from 'react';
-import styles from './CardCard.style';
+import styles from './CartCard.style';
 import {ProductContext} from '../../context/ProductContext';
 
 const CartCard = ({cartData}) => {

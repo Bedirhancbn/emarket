@@ -7,19 +7,16 @@ import {ProductContext} from '../../context/ProductContext';
 const MainFlatListHeader = () => {
   const {originData, setHomeScreenData, mainFilterData} =
     useContext(ProductContext);
-  const [originDataCopy, setOriginDataCopy] = useState(originData);
+  const [filteredData, setFilteredData] = useState(originData);
   useEffect(() => {
-    if (mainFilterData.length > 0) {
-      setOriginDataCopy(mainFilterData);
-    } else {
-      setOriginDataCopy(originData);
-    }
+    setFilteredData(mainFilterData.length > 0 ? mainFilterData : originData);
   }, [mainFilterData, originData]);
 
   const navigation = useNavigation();
+
   const text = useState();
   const handleSearch = query => {
-    const filtredResult = originDataCopy.filter(item => {
+    const filtredResult = filteredData.filter(item => {
       const filtredText = query.trim().toLowerCase();
       return item.name.toLowerCase().includes(filtredText);
     });

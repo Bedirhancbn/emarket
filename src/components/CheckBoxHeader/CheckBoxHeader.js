@@ -1,20 +1,40 @@
 import {View, TextInput, Image} from 'react-native';
-import React, {useContext, useState} from 'react';
+import React, {useContext, useEffect, useState} from 'react';
 import styles from './CheckBoxHeader.style';
 import {ProductContext} from '../../context/ProductContext';
 
-const CheckBoxHeader = ({searchData}) => {
-  const {chechkBoxBrands, setChechkBoxBrands} = useContext(ProductContext);
-  const [originalCheckBoxData] = useState([...chechkBoxBrands]);
+const CheckBoxHeader = ({searchType}) => {
+  const {
+    chechkBoxBrands,
+    setChechkBoxBrands,
+    filteredModels,
+    setFilteredModels,
+  } = useContext(ProductContext);
+
+  const [originalBrands] = useState([...chechkBoxBrands]);
+  const [originalModels, setOriginalModels] = useState([...filteredModels]);
+
+  useEffect(() => {
+    setOriginalModels([...filteredModels]);
+  }, [filteredModels]);
 
   const [searchText, setSearchText] = useState('');
+
   const handleSearch = query => {
     setSearchText(query);
     const formattedText = query.trim().toLowerCase();
-    const filteredResult = originalCheckBoxData.filter(item => {
-      return item.brand.toLowerCase().includes(formattedText);
-    });
-    setChechkBoxBrands([...filteredResult]);
+
+    if (searchType === 'brand') {
+      const filteredResult = originalBrands.filter(item => {
+        return item.brand.toLowerCase().includes(formattedText);
+      });
+      setChechkBoxBrands([...filteredResult]);
+    } else if (searchType === 'model') {
+      const filteredResult = originalModels.filter(item => {
+        return item.model.toLowerCase().includes(formattedText);
+      });
+      setFilteredModels([...filteredResult]);
+    }
   };
 
   return (

@@ -6,13 +6,10 @@ import {
   ActivityIndicator,
 } from 'react-native';
 import React, {useContext, useEffect, useState} from 'react';
-import useFetch from '../../hooks/useFetch';
-import Config from 'react-native-config';
 import styles from './ProductDetail.style';
 import {ProductContext} from '../../context/ProductContext';
 
 const ProductDetail = ({productId}) => {
-  const {data: detailData} = useFetch(Config.URL);
   const {addCart, addFav, favData, removeFav, originData} =
     useContext(ProductContext);
   const [already, setAlready] = useState(false);

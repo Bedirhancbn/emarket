@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {useCallback, useEffect, useState} from 'react';
 import {createContext} from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import Config from 'react-native-config';
@@ -21,6 +21,7 @@ export const ProductProvider = props => {
   const [radioButtonValue, setRadioButtonValue] = useState(0);
 
   useEffect(() => {
+    // cihaza kaydedilmiş verileri getir
     const getData = async () => {
       try {
         const jsonValue = await AsyncStorage.getItem('cart-key');
@@ -39,6 +40,7 @@ export const ProductProvider = props => {
   }, []);
 
   useEffect(() => {
+    // cihaza verileri kaydet
     const storeData = async () => {
       try {
         const jsonValue = JSON.stringify(cartData);
@@ -52,61 +54,61 @@ export const ProductProvider = props => {
     storeData();
   }, [cartData, favData]);
 
-  const addCart = oneProductData => {
-    const alreadyAdded = cartData.some(
-      element => element.id === oneProductData.id,
-    );
-    if (!alreadyAdded) {
-      setCartData([...cartData, {...oneProductData, quantity: 1}]);
-      console.log('Product add successfully');
-    } else {
-      console.log('Product already added cart.');
-    }
-  };
-
-  const addFav = oneProductData => {
-    const alreadyAdded = favData.some(
-      element => element.id === oneProductData.id,
-    );
-    if (!alreadyAdded) {
-      setFavData([...favData, {...oneProductData, isFav: true}]);
-      console.log('Product add successfully fav');
-    } else {
-      console.log('Product already added fav.');
-    }
-  };
-
-  const removeFav = oneFavData => {
-    setFavData(prevFavData =>
-      prevFavData.filter(element => element.id !== oneFavData.id),
-    );
-  };
-
-  const increaseQuantity = idQuantity => {
-    const updateQuantity = cartData.map(element => {
-      if (idQuantity === element.id) {
-        return {...element, quantity: element.quantity + 1};
+  const addCart = useCallback(
+    oneProductData => {
+      if (!cartData.some(item => item.id === oneProductData.id)) {
+        setCartData(prevCartData => [
+          ...prevCartData,
+          {...oneProductData, quantity: 1},
+        ]);
+        console.log('Product added successfully');
       } else {
-        return element;
+        console.log('Product already in cart');
       }
-    });
-    setCartData(updateQuantity);
-  };
+    },
+    [cartData],
+  );
 
-  const decreaseQuantity = idQuantity => {
-    const updateQuantity = cartData
-      .map(element => {
-        if (idQuantity === element.id && element.quantity > 1) {
-          return {...element, quantity: element.quantity - 1};
-        } else if (idQuantity === element.id && element.quantity === 1) {
-          return undefined;
-        } else {
-          return element;
-        }
-      })
-      .filter(element => element !== undefined);
-    setCartData(updateQuantity);
-  };
+  const addFav = useCallback(
+    oneProductData => {
+      if (!favData.some(item => item.id === oneProductData.id)) {
+        setFavData(prevFavData => [
+          ...prevFavData,
+          {...oneProductData, isFav: true},
+        ]);
+        console.log('Product add successfully fav');
+      } else {
+        console.log('Product already added fav.');
+      }
+    },
+    [favData],
+  );
+
+  const removeFav = useCallback(oneFavData => {
+    setFavData(prevFavData =>
+      prevFavData.filter(item => item.id !== oneFavData.id),
+    );
+  }, []);
+
+  const increaseQuantity = useCallback(id => {
+    setCartData(prevCartData =>
+      prevCartData.map(item =>
+        item.id === id ? {...item, quantity: item.quantity + 1} : item,
+      ),
+    );
+  }, []);
+
+  const decreaseQuantity = useCallback(id => {
+    setCartData(prevCartData =>
+      prevCartData
+        .map(item =>
+          item.id === id && item.quantity > 1
+            ? {...item, quantity: item.quantity - 1}
+            : item,
+        )
+        .filter(item => item.quantity > 0),
+    );
+  }, []);
 
   useEffect(() => {
     axios(Config.URL).then(res => {
@@ -121,7 +123,6 @@ export const ProductProvider = props => {
     <ProductContext.Provider
       value={{
         originData, // hiçbir manüpülasyon yapılmadan saf data
-        setOriginData,
         mainData, // ekranda ilk gözüken data
         setMainData,
         mainFilterData, // bütün filtrelemeler elde edildikten sonraki data

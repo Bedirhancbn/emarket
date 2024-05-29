@@ -1,5 +1,5 @@
 import * as React from 'react';
-import {Image} from 'react-native';
+import {Image, StyleSheet} from 'react-native';
 import {NavigationContainer} from '@react-navigation/native';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
@@ -16,6 +16,12 @@ import Profile from './screens/Profile/Profile';
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
 
+const headerOptions = {
+  headerStyle: {backgroundColor: '#2A59FE'},
+  headerTitleStyle: {fontWeight: '900', fontSize: 28},
+  headerTintColor: '#fff',
+};
+
 function HomeScreen() {
   return (
     <Stack.Navigator screenOptions={{headerShown: false}}>
@@ -26,9 +32,7 @@ function HomeScreen() {
           options={{
             headerShown: true,
             title: 'E-market',
-            headerStyle: {backgroundColor: '#2A59FE'},
-            headerTitleStyle: {fontWeight: '900', fontSize: 28},
-            headerTintColor: '#fff',
+            ...headerOptions,
           }}
         />
         <Stack.Screen
@@ -37,9 +41,9 @@ function HomeScreen() {
           options={{
             headerShown: true,
             title: '',
-            headerTintColor: '#fff',
             headerTitleAlign: 'center',
-            headerStyle: {backgroundColor: '#2A59FE'},
+            ...headerOptions,
+            headerTitleStyle: {fontSize: 23},
           }}
         />
       </Stack.Group>
@@ -59,9 +63,7 @@ function CartScreen() {
         options={{
           headerShown: true,
           title: 'E-market',
-          headerStyle: {backgroundColor: '#2A59FE'},
-          headerTitleStyle: {fontWeight: '900', fontSize: 28},
-          headerTintColor: '#fff',
+          ...headerOptions,
         }}
       />
     </Stack.Navigator>
@@ -77,9 +79,7 @@ function FavoritiesScreen() {
         options={{
           headerShown: true,
           title: 'Favorities',
-          headerStyle: {backgroundColor: '#2A59FE'},
-          headerTitleStyle: {fontWeight: '900', fontSize: 28},
-          headerTintColor: '#fff',
+          ...headerOptions,
         }}
       />
     </Stack.Navigator>
@@ -121,12 +121,7 @@ function MainApp() {
           tabBarIcon: () => {
             return (
               <Image
-                style={{
-                  width: 35,
-                  height: 35,
-                  marginTop: 15,
-                  marginRight: 15,
-                }}
+                style={styles.icon}
                 source={require('./assets/images/home_icon.png')}
               />
             );
@@ -142,12 +137,7 @@ function MainApp() {
           tabBarIcon: () => {
             return (
               <Image
-                style={{
-                  width: 35,
-                  height: 35,
-                  marginTop: 15,
-                  marginRight: 15,
-                }}
+                style={styles.icon}
                 source={require('./assets/images/cart_icon.png')}
               />
             );
@@ -162,12 +152,7 @@ function MainApp() {
           tabBarIcon: () => {
             return (
               <Image
-                style={{
-                  width: 35,
-                  height: 35,
-                  marginTop: 15,
-                  marginRight: 15,
-                }}
+                style={styles.icon}
                 source={require('./assets/images/favorites_icon.png')}
               />
             );
@@ -182,12 +167,7 @@ function MainApp() {
           tabBarIcon: () => {
             return (
               <Image
-                style={{
-                  width: 35,
-                  height: 35,
-                  marginTop: 15,
-                  marginRight: 15,
-                }}
+                style={styles.icon}
                 source={require('./assets/images/profile_icon.png')}
               />
             );
@@ -197,5 +177,14 @@ function MainApp() {
     </Tab.Navigator>
   );
 }
+
+const styles = StyleSheet.create({
+  icon: {
+    width: 35,
+    height: 35,
+    marginTop: 15,
+    marginRight: 15,
+  },
+});
 
 export default App;

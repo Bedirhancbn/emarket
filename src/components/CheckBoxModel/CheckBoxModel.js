@@ -70,9 +70,7 @@ const CheckBoxModel = () => {
         data={filteredModels}
         renderItem={renderModel}
         style={styles.flatList}
-        ListHeaderComponent={
-          <CheckBoxHeader /* searchModel={filteredModels} */ />
-        }
+        ListHeaderComponent={<CheckBoxHeader searchType="model" />}
       />
     </View>
   );

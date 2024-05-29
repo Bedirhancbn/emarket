@@ -20,17 +20,9 @@ function ProductCard({productList, navigationToDetail}) {
     setAlready(isFavorite);
   }, [favData, productList.item.id]);
 
-  const onClickAddCart = () => {
-    addCart(productList.item);
-  };
-
-  const onClickFav = () => {
-    if (already) {
-      removeFav(productList.item);
-    } else {
-      addFav(productList.item);
-    }
-  };
+  const onClickAddCart = () => addCart(productList.item);
+  const onClickFav = () =>
+    already ? removeFav(productList.item) : addFav(productList.item);
 
   return (
     <View style={styles.container}>

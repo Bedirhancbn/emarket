@@ -1,4 +1,4 @@
-import {View, FlatList, StyleSheet, Text} from 'react-native';
+import {View, FlatList, StyleSheet} from 'react-native';
 import React, {useContext, useEffect} from 'react';
 import ProductCard from '../../../components/ProductCard/ProductCard';
 import MainFlatListHeader from '../../../components/MainFlatListHeader';
@@ -9,11 +9,7 @@ const Main = ({navigation}) => {
     useContext(ProductContext);
 
   useEffect(() => {
-    if (mainFilterData.length > 0) {
-      setHomeScreenData(mainFilterData);
-    } else {
-      setHomeScreenData(mainData);
-    }
+    setHomeScreenData(mainFilterData.length > 0 ? mainFilterData : mainData);
   }, [mainData, mainFilterData, setHomeScreenData]);
 
   const navigateToDetail = id => {

@@ -24,61 +24,62 @@ const PrimaryButton = () => {
     return unsubscribe;
   }, [navigation, setMainFilterData, originData]);
 
-  const handleFilterClick = () => {
-    let filteredData = [...mainData];
-
-    if (radioButtonValue !== 0) {
-      switch (radioButtonValue) {
-        case 1:
-          filteredData.sort(
-            (a, b) => new Date(a.createdAt) - new Date(b.createdAt),
-          );
-          break;
-        case 2:
-          filteredData.sort(
-            (a, b) => new Date(b.createdAt) - new Date(a.createdAt),
-          );
-          break;
-        case 3:
-          filteredData.sort((a, b) => b.price - a.price);
-          break;
-        case 4:
-          filteredData.sort((a, b) => a.price - b.price);
-          break;
-        default:
-          break;
-      }
-      setMainFilterData(filteredData);
-      setRadioButtonValue(0);
+  const sortData = data => {
+    switch (radioButtonValue) {
+      case 1:
+        return data.sort(
+          (a, b) => new Date(a.createdAt) - new Date(b.createdAt),
+        );
+      case 2:
+        return data.sort(
+          (a, b) => new Date(b.createdAt) - new Date(a.createdAt),
+        );
+      case 3:
+        return data.sort((a, b) => b.price - a.price);
+      case 4:
+        return data.sort((a, b) => a.price - b.price);
+      default:
+        return data;
     }
+  };
 
+  const filterByBrands = data => {
     const selectedBrands = chechkBoxBrands
       .filter(brand => brand.isChecked)
       .map(brand => brand.brand);
 
-    filteredData = filteredData.filter(item =>
-      selectedBrands.includes(item.brand),
-    );
+    return selectedBrands.length > 0
+      ? data.filter(item => selectedBrands.includes(item.brand))
+      : data;
+  };
 
+  const filterByModels = data => {
     const selectedModels = filteredModels
       .filter(model => model.isChecked)
       .map(model => model.model);
 
-    if (selectedModels.length > 0) {
-      filteredData = filteredData.filter(item =>
-        selectedModels.includes(item.model),
-      );
+    return selectedModels.length > 0
+      ? data.filter(item => selectedModels.includes(item.model))
+      : data;
+  };
+
+  const applyFilters = () => {
+    let filteredData = [...mainData];
+
+    if (radioButtonValue !== 0) {
+      filteredData = sortData(filteredData);
+      setRadioButtonValue(0);
     }
-    if (filteredData.length > 0) {
-      setMainFilterData(filteredData);
-    }
+
+    filteredData = filterByBrands(filteredData);
+    filteredData = filterByModels(filteredData);
+
+    setMainFilterData(filteredData);
   };
 
   return (
     <View style={styles.container}>
-      <TouchableOpacity
-        style={styles.buttonContainer}
-        onPress={handleFilterClick}>
+      <TouchableOpacity style={styles.buttonContainer} onPress={applyFilters}>
         <Text style={styles.buttonText}>Primary</Text>
       </TouchableOpacity>
     </View>
