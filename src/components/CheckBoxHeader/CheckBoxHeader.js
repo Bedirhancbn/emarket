@@ -23,7 +23,6 @@ const CheckBoxHeader = ({searchType}) => {
   const handleSearch = query => {
     setSearchText(query);
     const formattedText = query.trim().toLowerCase();
-
     if (searchType === 'brand') {
       const filteredResult = originalBrands.filter(item => {
         return item.brand.toLowerCase().includes(formattedText);
